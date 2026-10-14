@@ -14,11 +14,24 @@ LAYOUTS.recepcio = function () {
   const tel = (C.contact && C.contact.phone) || '';
   const fontLoad = () => { const f = window.A5F && A5F[C.alapBetu || 'cormorant']; if (f && !document.getElementById('rcFont')) { const l = document.createElement('link'); l.id = 'rcFont'; l.rel = 'stylesheet'; l.href = `https://fonts.googleapis.com/css2?family=${f[1]}&display=swap`; document.head.appendChild(l); document.body.style.setProperty('--serif', `"${f[0]}", Georgia, serif`); } };
 
+  const tema = (C.recepcio && C.recepcio.tema) || 'vilagos', lux = tema === 'luxus';
   lx2Start(() => {
     fontLoad();
+    if (lux) document.body.classList.remove('light');   // a sötét luxus téma a saját színeit használja
     const stage = $('.rc-stage'), ring = $('.rc-ring'), doors = $('.rc-doors'), panels = $$('.rc-room'), chips = $$('.rc-chip'), room = $('.rc-open'); if (!stage) return;
     // érkezés: az ajtó szétnyílik
-    FX.later(() => doors.classList.add('open'), FX.reduce || /thumb=1/.test(location.search) ? 0 : 900);
+    const quick = FX.reduce || /thumb=1/.test(location.search);
+    FX.later(() => { doors.classList.add('open'); stage.classList.add('in'); }, quick ? 0 : 1100);
+    let intro = quick ? 1 : 0; const t0 = performance.now() + (quick ? 0 : 1100);   // belépő kamera: messziről beúszik
+    if (lux) {   // aranypor a levegőben – az egér elől szétrebben
+      const { c, g, dpr } = F3.canvas('rc-dust', stage, false); c.style.position = 'absolute'; F3.trackMouse();
+      const P = Array.from({ length: innerWidth < 760 ? 70 : 160 }, () => ({ x: Math.random(), y: Math.random(), z: 0.3 + Math.random() * 0.7, vx: 0, vy: 0, tw: Math.random() * 6.28 }));
+      FX.tick((t) => { if (!F3.visible(stage)) return; const W = c.width / dpr, H = c.height / dpr, rr = stage.getBoundingClientRect(), mx = F3.mouse.x - rr.left, my = F3.mouse.y - rr.top;
+        g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); g.globalCompositeOperation = 'lighter';
+        for (const p of P) { p.y -= 0.00035 * (1 + p.z); if (p.y < -0.05) { p.y = 1.05; p.x = Math.random(); } let x = p.x * W + Math.sin(t / 2200 + p.tw) * 18 * p.z, y = p.y * H; const dx = x - mx, dy = y - my, d = Math.hypot(dx, dy); if (d < 140) { p.vx += (dx / d) * (140 - d) * 0.0009; p.vy += (dy / d) * (140 - d) * 0.0009; } p.vx *= 0.95; p.vy *= 0.95; p.x += p.vx / 10; p.y += p.vy / 10;
+          const a = (0.35 + 0.65 * Math.abs(Math.sin(t / 700 + p.tw))) * p.z, r = 0.6 + p.z * 2.2; const gr = g.createRadialGradient(x, y, 0, x, y, r * 4); gr.addColorStop(0, `rgba(255,226,150,${a})`); gr.addColorStop(1, 'rgba(255,200,90,0)'); g.fillStyle = gr; g.beginPath(); g.arc(x, y, r * 4, 0, 6.3); g.fill(); }
+        g.globalCompositeOperation = 'source-over'; });
+    }
     const R = () => Math.max(380, Math.min(innerWidth * 0.5, 820));
     panels.forEach((p, i) => p.style.setProperty('--a', (i * 360) / N + 'deg'));
     let ang = 0, target = 0, drag = false, lx = 0, moved = 0, zoom = 0, zt = 0, focus = -1;
@@ -54,7 +67,8 @@ LAYOUTS.recepcio = function () {
       if (!drag && !room.classList.contains('on') && Math.abs(target - ang) < 0.05) target += Math.sin(t / 3000) * 0.004;
       ang += (target - ang) * 0.08; zoom += (zt - zoom) * 0.07;
       const r = R();
-      ring.style.transform = `translateZ(${r * (0.3 + zoom * 1.05)}px) rotateY(${-ang}deg)`;
+      if (intro < 1 && t > t0) intro = Math.min(1, (t - t0) / 1800); const ease = 1 - Math.pow(1 - intro, 3);
+      ring.style.transform = `translateZ(${r * (0.3 + zoom * 1.05) - (1 - ease) * r * 1.6}px) rotateY(${-ang + (1 - ease) * 40}deg)`;
       panels.forEach((p) => p.style.setProperty('--r', r + 'px'));
       const front = Math.round(norm(ang) / (360 / N)) % N;
       panels.forEach((p, i) => p.classList.toggle('front', i === front));
@@ -62,7 +76,7 @@ LAYOUTS.recepcio = function () {
     });
   });
 
-  return `<div class="lx2 rc">
+  return `<div class="lx2 rc rc-${tema}">
     <section class="rc-stage" aria-label="A szalon recepciója – húzd oldalra a körbenézéshez">
       <div class="rc-sky"></div><div class="rc-wall"></div><div class="rc-brand" aria-hidden="true">${esc(C.name)}</div><div class="rc-strip"></div><div class="rc-halo"></div><div class="rc-floor"></div>
       <div class="rc-scene"><div class="rc-ring">
@@ -73,7 +87,8 @@ LAYOUTS.recepcio = function () {
         <div class="rc-deskcta"><button class="btn btn-gold" type="button" data-open="0">Belépek: ${esc(rooms[0] ? rooms[0].name : '')} →</button>${tel ? `<a class="btn btn-ghost" href="${telHref(tel)}">${esc(tel)}</a>` : ''}</div></div></div>
       <button class="rc-arrow l" data-d="-1" type="button" aria-label="Balra">‹</button><button class="rc-arrow r" data-d="1" type="button" aria-label="Jobbra">›</button>
       <small class="rc-hint">húzd oldalra – nézz körül a szalonban</small>
-      <div class="rc-doors" aria-hidden="true"><i class="l"></i><i class="r"></i><div class="rc-welcome"><small>${esc(C.hero.pill || '')}</small><b>Üdvözlünk az ${esc(C.name)}-ban</b></div></div>
+      <div class="rc-beam b1"></div><div class="rc-beam b2"></div><div class="rc-beam b3"></div>
+      <div class="rc-doors" aria-hidden="true"><i class="l"><span>${esc((C.name || "").charAt(0))}</span></i><i class="r"><span>${esc((C.name || "").charAt(0))}</span></i><b class="rc-seam"></b><div class="rc-welcome"><small>${esc(C.hero.pill || '')}</small><b>Üdvözlünk az ${esc(C.name)}-ban</b></div></div>
     </section>
     <div class="rc-open" role="dialog" aria-modal="true"><div class="rc-open-bg"></div><div class="rc-open-in wrap"></div></div>
     <section class="sec wrap rc-about"><div><span class="sec-num">${esc(C.name)}</span><h2>${fill(C.hero.title)}</h2><p class="lead">${fill(C.hero.lead)}</p></div>
