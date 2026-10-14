@@ -1,0 +1,92 @@
+/* Bemutató Gyár – RECEPCIÓ (belépés a szalonba) */
+.layout-recepcio .bg { display: none; }
+.layout-recepcio { background: var(--bg); }
+.layout-recepcio .lx2 { position: relative; z-index: 1; }
+.rc-stage { position: relative; height: 100vh; min-height: 640px; overflow: hidden; perspective: 1100px; perspective-origin: 50% 42%; user-select: none; touch-action: pan-y; cursor: grab;
+  background: radial-gradient(120% 70% at 50% 0%, #fffaf2 0%, var(--bg) 55%, var(--bg-2) 100%); }
+.rc-stage.drag { cursor: grabbing; }
+.rc-sky { position: absolute; inset: 0 0 45% 0; background: linear-gradient(rgba(var(--accent-rgb), .10), transparent); pointer-events: none; }
+.rc-wall { position: absolute; left: 0; right: 0; top: 0; height: 64%; pointer-events: none; opacity: .55;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.55) 0 14px, rgba(var(--shade-rgb), .05) 14px 16px, rgba(255,255,255,.2) 16px 30px); -webkit-mask: linear-gradient(transparent, #000 25%, #000 80%, transparent); mask: linear-gradient(transparent, #000 25%, #000 80%, transparent); }
+.rc-brand { position: absolute; left: 50%; top: 13%; transform: translateX(-50%); font-family: var(--serif); font-size: clamp(60px, 11vw, 190px); letter-spacing: .04em; white-space: nowrap; color: rgba(var(--accent-rgb), .13); pointer-events: none; }
+.rc-strip { position: absolute; left: 0; right: 0; top: 63%; height: 2px; background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), .9), transparent); box-shadow: 0 0 24px rgba(var(--accent-rgb), .8); pointer-events: none; }
+.rc-halo { position: absolute; left: 50%; top: -34vh; width: 120vw; height: 60vh; transform: translateX(-50%); border-radius: 50%; border: 2px solid rgba(var(--accent-rgb), .45);
+  box-shadow: 0 0 60px rgba(var(--accent-rgb), .35), inset 0 0 80px rgba(var(--accent-rgb), .25); pointer-events: none; animation: rcHalo 6s ease-in-out infinite; }
+@keyframes rcHalo { 50% { box-shadow: 0 0 90px rgba(var(--accent-rgb), .5), inset 0 0 120px rgba(var(--accent-rgb), .35); } }
+.rc-floor { position: absolute; left: -30%; right: -30%; bottom: -30%; height: 62%; transform: perspective(900px) rotateX(74deg); transform-origin: 50% 0;
+  background: radial-gradient(60% 60% at 50% 20%, rgba(var(--accent-rgb), .22), transparent 70%), repeating-linear-gradient(90deg, rgba(var(--shade-rgb), .05) 0 1px, transparent 1px 120px), linear-gradient(var(--bg-2), var(--bg)); pointer-events: none; }
+.rc-scene { position: absolute; left: 50%; top: 40%; width: 0; height: 0; transform-style: preserve-3d; }
+.rc-ring { position: absolute; transform-style: preserve-3d; will-change: transform; }
+.rc-room { --r: 700px; position: absolute; left: -180px; top: -270px; width: 360px; height: 530px; display: block; color: var(--ink);
+  transform: rotateY(var(--a)) translateZ(calc(var(--r) * -1)); backface-visibility: hidden; transition: filter .5s; filter: saturate(.75) brightness(.96); }
+.rc-arch { position: absolute; inset: 0 0 96px; border-radius: 180px 180px 18px 18px; background-size: cover; background-position: center;
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), .55), 0 0 0 10px rgba(255,255,255,.35), 0 40px 70px -30px rgba(40,30,15,.45); transition: box-shadow .5s, transform .5s var(--ease); }
+.rc-arch::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(rgba(255,255,255,.12), transparent 40%, rgba(var(--shade-rgb), .25)); }
+.rc-sign { position: absolute; left: 0; right: 0; bottom: 0; height: 86px; display: grid; justify-items: center; align-content: center; gap: 2px; text-align: center; }
+.rc-sign small { font: 600 10px var(--sans); letter-spacing: .3em; color: var(--gold); } .rc-sign b { font-family: var(--serif); font-weight: 500; font-size: 26px; line-height: 1.1; }
+.rc-sign em { font-style: normal; font-size: 12px; color: var(--muted); letter-spacing: .04em; opacity: 0; transform: translateY(6px); transition: .4s; }
+.rc-glow { position: absolute; left: 10%; right: 10%; bottom: -26px; height: 30px; border-radius: 50%; background: radial-gradient(rgba(var(--accent-rgb), .45), transparent 70%); filter: blur(6px); opacity: .5; transition: opacity .5s; }
+.rc-room.front { filter: none; }
+.rc-room.front .rc-arch { box-shadow: 0 0 0 1px var(--gold), 0 0 0 10px rgba(255,255,255,.6), 0 0 70px rgba(var(--accent-rgb), .45), 0 50px 80px -30px rgba(40,30,15,.5); }
+.rc-room.front .rc-sign em { opacity: 1; transform: none; } .rc-room.front .rc-glow { opacity: 1; }
+.rc-room:hover .rc-arch { transform: translateY(-6px); }
+/* recepciós pult */
+.rc-desk { position: absolute; left: 50%; bottom: 4vh; transform: translateX(-50%); z-index: 4; width: min(760px, 94vw); display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: start;
+  padding: 18px 22px; border-radius: 26px; background: rgba(255,255,255,.62); border: 1px solid rgba(var(--accent-rgb), .45); backdrop-filter: blur(18px) saturate(1.3); -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: 0 30px 60px -30px rgba(40,30,15,.35), inset 0 1px 0 rgba(255,255,255,.8); cursor: default; }
+.rc-desk > div { min-width: 0; } .rc-desk p { overflow-wrap: anywhere; }
+.rc-avatar { width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, var(--gold) 55%, var(--logo-edge)); box-shadow: 0 0 0 4px rgba(var(--accent-rgb), .18), 0 0 30px rgba(var(--accent-rgb), .45); animation: rcBreath 4s ease-in-out infinite; }
+@keyframes rcBreath { 50% { box-shadow: 0 0 0 8px rgba(var(--accent-rgb), .1), 0 0 40px rgba(var(--accent-rgb), .6); } }
+.rc-desk small { font-size: 10px; letter-spacing: .3em; color: var(--gold); font-weight: 700; }
+.rc-desk p { font-family: var(--serif); font-size: clamp(20px, 2vw, 26px); line-height: 1.2; margin: 4px 0 10px; color: var(--ink); }
+.rc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.rc-chip { padding: 7px 14px; border-radius: 99px; border: 1px solid var(--line-2); font-size: 13px; color: var(--ink-2); background: rgba(255,255,255,.5); transition: .25s; }
+.rc-chip:hover { border-color: var(--gold); } .rc-chip.on { background: var(--gold); border-color: var(--gold); color: #fff; }
+.rc-deskcta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; } .rc-deskcta .btn { padding: 10px 18px; font-size: 14px; }
+.rc-arrow { position: absolute; top: 40%; z-index: 4; width: 54px; height: 54px; margin-top: -27px; border-radius: 50%; border: 1px solid rgba(var(--accent-rgb), .5); background: rgba(255,255,255,.55); color: var(--ink); font-size: 28px; backdrop-filter: blur(10px); cursor: pointer; transition: .25s; }
+.rc-arrow:hover { background: var(--gold); color: #fff; } .rc-arrow.l { left: 3vw; } .rc-arrow.r { right: 3vw; }
+.rc-hint { position: absolute; left: 50%; top: 92px; transform: translateX(-50%); z-index: 3; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+/* érkezés: üvegajtó */
+.rc-doors { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
+.rc-doors i { position: absolute; top: 0; bottom: 0; width: 50.5%; background: linear-gradient(90deg, rgba(255,255,255,.92), rgba(240,236,228,.85)); backdrop-filter: blur(10px);
+  border: 1px solid rgba(var(--accent-rgb), .5); transition: transform 1.4s cubic-bezier(.7,0,.2,1); }
+.rc-doors i::after { content: ''; position: absolute; top: 50%; width: 4px; height: 140px; margin-top: -70px; border-radius: 4px; background: var(--gold); }
+.rc-doors .l { left: 0; } .rc-doors .l::after { right: 24px; } .rc-doors .r { right: 0; } .rc-doors .r::after { left: 24px; }
+.rc-welcome { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 10px; text-align: center; transition: opacity .6s; }
+.rc-welcome small { letter-spacing: .3em; font-size: 11px; color: var(--gold); text-transform: uppercase; } .rc-welcome b { font-family: var(--serif); font-weight: 500; font-size: clamp(34px, 5vw, 70px); color: var(--ink); }
+.rc-doors.open .l { transform: translateX(-102%); } .rc-doors.open .r { transform: translateX(102%); } .rc-doors.open .rc-welcome { opacity: 0; }
+/* egy terem belülről */
+.rc-open { position: fixed; inset: 0; z-index: 70; overflow-y: auto; opacity: 0; visibility: hidden; transition: opacity .6s, visibility .6s; }
+.rc-open.on { opacity: 1; visibility: visible; }
+.rc-open-bg { position: fixed; inset: -4%; background-size: cover; background-position: center; filter: blur(2px) saturate(.95); transform: scale(1.04); }
+.rc-open-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(250,247,241,.97) 0%, rgba(250,247,241,.93) 52%, rgba(250,247,241,.35) 78%, rgba(250,247,241,.1)); }
+@media (max-width: 860px) { .rc-open-bg::after { background: rgba(250,247,241,.93); } }
+.rc-open-in { position: relative; padding-block: 110px 80px; display: grid; gap: 16px; max-width: 980px; }
+.rc-back { justify-self: start; padding: 9px 16px; border-radius: 99px; border: 1px solid var(--line-2); background: rgba(255,255,255,.6); color: var(--ink); font-size: 14px; cursor: pointer; }
+.rc-back:hover { border-color: var(--gold); }
+.rc-kick { font-size: 11px; letter-spacing: .3em; color: var(--gold); font-weight: 700; text-transform: uppercase; }
+.rc-open-in h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(40px, 6vw, 84px); line-height: 1; color: var(--ink); }
+.rc-lead { font-size: 18px; color: var(--ink-2); max-width: 640px; }
+.rc-menu { display: grid; gap: 2px; margin-top: 10px; }
+.rc-menu a { display: flex; align-items: baseline; gap: 14px; padding: 14px 4px; border-bottom: 1px solid var(--line); color: var(--ink); animation: rcIn .5s both var(--d); }
+@keyframes rcIn { from { opacity: 0; transform: translateY(10px); } }
+.rc-menu span { display: grid; gap: 2px; min-width: 0; } .rc-menu b { font-family: var(--serif); font-weight: 500; font-size: 21px; line-height: 1.2; } .rc-menu small { color: var(--muted); font-size: 13px; }
+.rc-menu i { flex: 1; border-bottom: 1px dotted rgba(var(--accent-rgb), .6); min-width: 30px; transform: translateY(-5px); } .rc-menu em { font-style: normal; color: var(--gold); font-weight: 600; white-space: nowrap; }
+.rc-menu a:hover b { color: var(--gold); }
+.rc-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+body.rc-in { overflow: hidden; }
+/* lent: rólunk, lépések, idézet */
+.rc-about { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+.rc-about h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(36px, 4.6vw, 64px); line-height: 1.02; margin: 10px 0 14px; }
+.rc-perks { display: grid; gap: 12px; } .rc-perks div { display: grid; grid-template-columns: 44px 1fr; grid-template-rows: auto auto; column-gap: 12px; padding: 16px 18px; border-radius: 18px; background: rgba(255,255,255,.6); border: 1px solid var(--line); }
+.rc-perks span { grid-row: span 2; font-size: 26px; } .rc-perks b { font-family: var(--serif); font-size: 21px; font-weight: 500; } .rc-perks small { color: var(--muted); }
+.rc-steps h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(30px, 3.4vw, 48px); margin-bottom: 24px; }
+.rc-steps ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 22px; }
+.rc-steps li { display: grid; gap: 6px; padding-top: 18px; border-top: 1px solid rgba(var(--accent-rgb), .6); } .rc-steps li span { font: 500 34px var(--serif); color: var(--gold); } .rc-steps li b { font-family: var(--serif); font-size: 22px; font-weight: 500; } .rc-steps li p { color: var(--ink-2); font-size: 15px; }
+.rc-quote p { font-family: var(--serif); font-size: clamp(30px, 4vw, 56px); line-height: 1.15; text-align: center; max-width: 22ch; margin: 0 auto; } .rc-quote em { color: var(--gold); }
+@media (max-width: 760px) {
+  .rc-room { left: -120px; top: -190px; width: 240px; height: 360px; } .rc-arch { inset: 0 0 80px; border-radius: 120px 120px 14px 14px; } .rc-sign b { font-size: 20px; }
+  .rc-desk { grid-template-columns: 44px 1fr; padding: 14px; bottom: 2vh; } .rc-avatar { width: 44px; height: 44px; } .rc-chips { flex-wrap: nowrap; overflow-x: auto; } .rc-chip { flex: none; }
+  .rc-arrow { top: 34%; width: 44px; height: 44px; } .rc-about { grid-template-columns: 1fr; } .rc-scene { top: 34%; } .rc-hint { top: 80px; }
+}
+@media (prefers-reduced-motion: reduce) { .rc-halo, .rc-avatar { animation: none; } .rc-doors i { transition: none; } }
