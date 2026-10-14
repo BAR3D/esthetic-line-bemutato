@@ -302,6 +302,16 @@ body.a5-site .lx2 { position: relative; z-index: 1; }
 .a5-ev-sum { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; } .a5-ev-tot { color: var(--gold); font-size: 18px; }
 @media (max-width: 860px) { .a5-ev-top { grid-template-columns: 1fr; } .a5-ev-img { max-height: 420px; } .a5-ev-f { grid-template-columns: 1fr; } .a5-ev-cd div { min-width: 60px; } }
 
+
+/* ===================== világos (prémium spa) alap ===================== */
+body.light.a5-site { background: radial-gradient(90% 60% at 70% 0%, rgba(var(--accent-rgb), .12), var(--bg) 60%) fixed, var(--bg); }
+body.light .a5-shade, body.light .a5-copy, body.light .a5-band, body.light .a5-stack, body.light .a5-cf-info { --shade-rgb: 250,247,241; }
+body.light .a5-copy h1, body.light .a5-copy .lead { text-shadow: none; }
+body.light .a5h-kartya .a5-copy, body.light .a5-stack a, body.light .a5-calc-s, body.light .a5-sl-s, body.light .a5-qz { background: rgba(255,255,255,.72); }
+body.light .a5-frame { box-shadow: 0 40px 80px -40px rgba(60,50,30,.35); }
+body.light .a5-motif { opacity: .05; }
+body.light .a5-tag .dot { box-shadow: none; }
+
 /* ===================== mobil ===================== */
 @media (max-width: 860px) {
   .a5h-oszt .a5-hero { grid-template-columns: 1fr; } .a5h-oszt .a5-copy { margin: 0 16px; } .a5-vis { margin: 0 16px 60px; } .a5-frame { max-height: 50vh; }

@@ -166,7 +166,8 @@ function a5Render(R) {
     const evp = $('.a5-ev-pill'); if (evp) FX.on(evp, 'click', () => $('#a5-esemeny').scrollIntoView({ behavior: 'smooth', block: 'start' }));
     for (const k of R.szakaszok) { try { A5S[k] && A5S[k].i && A5S[k].i(R); } catch (e) { console.warn('alap-modul', k, e); } }
     const cmd = $('.a5-cmd'); if (cmd) FX.on(cmd, 'submit', (e) => { e.preventDefault(); const v = $('input', cmd).value.trim(); $('#searchBtn').click(); FX.later(() => { const si = $('#searchInput'); si.value = v; si.dispatchEvent(new Event('input')); }, 60); });
-    if (R.cta === 'ragado') { const bar = FX.add(document.createElement('div')); bar.className = 'a5-sticky'; bar.innerHTML = `<b>${esc(C.name)}</b><div class="hero-cta">${LX.cta()}</div>`; document.body.appendChild(bar); FX.tick(() => bar.classList.toggle('on', scrollY > innerHeight * 0.7)); }
+    if (R.cta === 'ragado' && R.dock !== 'dokk') {   // dokkos menü mellett nem kell még egy alsó sáv
+     const bar = FX.add(document.createElement('div')); bar.className = 'a5-sticky'; bar.innerHTML = `<b>${esc(C.name)}</b><div class="hero-cta">${LX.cta()}</div>`; document.body.appendChild(bar); FX.tick(() => bar.classList.toggle('on', scrollY > innerHeight * 0.7)); }
     if (R.cta === 'magnes') { const m = FX.add(document.createElement('a')); m.className = 'a5-mag'; m.href = `#/${NR}`; m.innerHTML = `<span>${fill(C.hero.cta).replace(/→/g, '')}</span><i>→</i>`; document.body.appendChild(m); FX.magnet([m]); }
   });
   return `<div class="lx2 a5 a5h-${R.hero} a5m-${mot}">
@@ -179,8 +180,10 @@ function a5Render(R) {
 }
 
 /* ---------- egész oldalra ható stílus (menü helye, gombforma, betű, motívum) – az alap teljes oldalán érvényes ---------- */
-function a5Global(R) {
-  const b = document.body; b.classList.add('a5-site', 'a5d-' + R.dock, 'a5g-' + R.gomb);
+function a5Global(R0) {
+  // a projekt felülírhatja az alap betűjét, gombformáját, motívumát és világos/sötét módját (config: alapBetu, alapGomb, alapMotivum, light)
+  const R = { ...R0, betu: C.alapBetu || R0.betu, gomb: C.alapGomb || R0.gomb, motivum: C.alapMotivum || R0.motivum };
+  const b = document.body; b.classList.add('a5-site', 'a5d-' + R.dock, 'a5g-' + R.gomb); const mod = new URLSearchParams(location.search).get('mod'); if (mod ? mod === 'vilagos' : C.light) b.classList.add('light'); else b.classList.remove('light');   // ?mod=vilagos | sotet: a hangulat linkből is választható
   const f = A5F[R.betu]; if (f) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = `https://fonts.googleapis.com/css2?family=${f[1]}&display=swap`; document.head.appendChild(l); b.style.setProperty('--serif', `"${f[0]}", var(--sans)`); }
   if (R.motivum && R.motivum !== 'nincs') { const m = document.createElement('div'); m.className = 'a5-motif m-' + R.motivum; m.setAttribute('aria-hidden', 'true'); b.prepend(m); }
 }
