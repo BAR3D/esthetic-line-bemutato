@@ -158,8 +158,9 @@ function a5Render(R) {
   lx2Start(() => {
     const stage = $('.a5-stage'); if (!stage) return;
     // a cím sosem törik szó közben: ha egy szó nem fér ki, a betűméret csökken
-    const h1 = $('.a5-copy h1'); if (h1) { const word = h1.textContent.split(/\s+/).sort((x, y) => y.length - x.length)[0] || '', probe = document.createElement('span'); probe.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;font-style:italic'; probe.textContent = word; h1.appendChild(probe); FX.add(probe);
-      const fit = () => { h1.style.fontSize = ''; let f = parseFloat(getComputedStyle(h1).fontSize); while ((probe.offsetWidth > h1.clientWidth * 0.97 || h1.scrollWidth > h1.clientWidth + 2) && f > 26) { f -= 3; h1.style.fontSize = f + 'px'; } }; fit(); if (document.fonts) document.fonts.ready.then(fit); FX.later(fit, 900); FX.on(window, 'resize', fit); }
+    const h1 = $('.a5-copy h1'); if (h1) { const word = h1.textContent.split(/\s+/).sort((x, y) => y.length - x.length)[0] || '', probe = document.createElement('span'); probe.setAttribute('aria-hidden', 'true'); probe.textContent = word; document.body.appendChild(probe); FX.add(probe);
+      const syncProbe = () => { const cs = getComputedStyle(h1); probe.style.cssText = `position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;font-family:${cs.fontFamily};font-size:${cs.fontSize};font-weight:${cs.fontWeight};font-style:italic;letter-spacing:${cs.letterSpacing};text-transform:${cs.textTransform}`; };
+      const fit = () => { h1.style.fontSize = ''; let f = parseFloat(getComputedStyle(h1).fontSize); syncProbe(); while ((probe.offsetWidth > h1.clientWidth * 0.97 || h1.scrollWidth > h1.clientWidth + 2) && f > 26) { f -= 3; h1.style.fontSize = f + 'px'; syncProbe(); } }; fit(); if (document.fonts) document.fonts.ready.then(fit); FX.later(fit, 900); FX.on(window, 'resize', fit); }
     try { (A5M[mot] || A5M.racs)(stage, opt); } catch (e) { console.warn('alap-motor', mot, e); }
     if (C.esemeny && !R.szakaszok.includes('esemeny')) { try { A5S.esemeny.i(R); } catch (e) { console.warn('alap-modul esemeny', e); } }
     const evp = $('.a5-ev-pill'); if (evp) FX.on(evp, 'click', () => $('#a5-esemeny').scrollIntoView({ behavior: 'smooth', block: 'start' }));
