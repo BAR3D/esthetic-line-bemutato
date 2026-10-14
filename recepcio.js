@@ -21,6 +21,8 @@ LAYOUTS.recepcio = function () {
     if (lux) document.body.classList.remove('light');   // a sötét luxus téma a saját színeit használja
     const stage = $('.rc-stage'), ring = $('.rc-ring'), doors = $('.rc-doors'), panels = $$('.rc-room'), chips = $$('.rc-chip'), room = $('.rc-open'); if (!stage) return;
     // érkezés: az ajtó szétnyílik
+    const ph = $('.rc-photo', stage); if (ph) { let mx = 0, my = 0, cx = 0, cy = 0; FX.on(window, 'pointermove', (e) => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; }, { passive: true });
+      FX.tick(() => { cx += (mx - cx) * 0.04; cy += (my - cy) * 0.04; ph.style.transform = `scale(1.12) translate(${cx * -22 - ((ang % 360) / 360) * 30}px, ${cy * -14}px)`; }); }   // a valódi(szerű) recepciókép enyhe mélységgel mozdul
     const quick = FX.reduce || /thumb=1/.test(location.search);
     FX.later(() => { doors.classList.add('open'); stage.classList.add('in'); }, quick ? 0 : 1100);
     let intro = quick ? 1 : 0; const t0 = performance.now() + (quick ? 0 : 1100);   // belépő kamera: messziről beúszik
@@ -79,7 +81,7 @@ LAYOUTS.recepcio = function () {
 
   return `<div class="lx2 rc rc-${tema}">
     <section class="rc-stage" aria-label="A szalon recepciója – húzd oldalra a körbenézéshez">
-      <div class="rc-sky"></div><div class="rc-wall"></div><div class="rc-brand" aria-hidden="true">${esc(C.name)}</div><div class="rc-strip"></div><div class="rc-halo"></div><div class="rc-floor"></div>
+      ${C.recepcio && C.recepcio.hatter ? `<div class="rc-photo" style="background-image:url(${img(C.recepcio.hatter)})"></div>` : ''}<div class="rc-sky"></div><div class="rc-wall"></div><div class="rc-brand" aria-hidden="true">${esc(C.name)}</div><div class="rc-strip"></div><div class="rc-halo"></div><div class="rc-floor"></div>
       <div class="rc-scene"><div class="rc-ring">
         ${rooms.map((s, i) => `<a class="rc-room" href="#/${NR}/${s.k}" draggable="false"><span class="rc-arch" style="background-image:url(${s.img})"></span><span class="rc-sign"><small>${String(i + 1).padStart(2, '0')}</small><b>${esc(s.name)}</b><em>${LX.needN(s)} ${L_('itemWord', 'kezelés')} · belépek →</em></span><span class="rc-glow"></span></a>`).join('')}
       </div></div>

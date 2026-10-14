@@ -134,7 +134,8 @@ body:has(.rc-luxus) .nav a, body:has(.rc-luxus) .brand { color: #f4ecdc; }
 .rc-luxus .rc-doors i { background: linear-gradient(90deg, rgba(14,13,11,.97), rgba(26,23,17,.95)); border-color: rgba(226,194,122,.5); backdrop-filter: blur(6px); }
 .rc-luxus .rc-doors i::after { background: linear-gradient(#f7e3a8, #a8812f); box-shadow: 0 0 20px rgba(226,194,122,.8); }
 .rc-doors i span { position: absolute; top: 50%; transform: translateY(-50%); font-family: var(--serif); font-size: clamp(120px, 18vw, 300px); line-height: 1; color: transparent; background: linear-gradient(120deg, #6e5426, #f7e3a8 45%, #c9a24f 60%, #6e5426); -webkit-background-clip: text; background-clip: text; opacity: 0; }
-.rc-luxus .rc-doors i span { opacity: .9; } .rc-doors .l span { right: 6%; } .rc-doors .r span { left: 6%; transform: translateY(-50%) scaleX(-1); }
+.rc-luxus .rc-doors i span { opacity: .28; }
+.rc-luxus .rc-welcome { top: auto; bottom: 18vh; place-content: end center; } .rc-luxus .rc-welcome b { text-shadow: none; filter: drop-shadow(0 4px 20px rgba(0,0,0,.9)); } .rc-doors .l span { right: 6%; } .rc-doors .r span { left: 6%; transform: translateY(-50%) scaleX(-1); }
 .rc-seam { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #fff2c8; box-shadow: 0 0 30px 6px rgba(247,227,168,.9); opacity: 0; }
 .rc-luxus .rc-seam { opacity: 1; } .rc-luxus .rc-doors.open .rc-seam { animation: rcBurst 1.3s ease-out forwards; }
 @keyframes rcBurst { 0% { opacity: 1; width: 2px; } 35% { opacity: 1; width: 40vw; margin-left: -20vw; box-shadow: 0 0 120px 60px rgba(255,236,180,.9); background: rgba(255,244,214,.85); } 100% { opacity: 0; width: 100vw; margin-left: -50vw; } }
@@ -152,3 +153,8 @@ body:has(.rc-luxus) .nav a, body:has(.rc-luxus) .brand { color: #f4ecdc; }
 .rc-luxus .rc-about h2, .rc-luxus .rc-steps h2 { color: #f7e3a8; } .rc-luxus .rc-steps li { border-top-color: rgba(226,194,122,.5); } .rc-luxus .rc-steps li p { color: #c9bda4; }
 .rc-luxus .rc-quote p { color: #f4ecdc; } .rc-luxus .rc-quote em { color: #e2c27a; }
 @media (prefers-reduced-motion: reduce) { .rc-luxus .rc-beam, .rc-luxus .rc-brand, .rc-luxus .rc-room.front .rc-arch, .rc-luxus .rc-halo::after { animation: none !important; } }
+
+/* a recepció saját háttérképe (C.recepcio.hatter) */
+.rc-photo { position: absolute; inset: -4%; background-size: cover; background-position: center 40%; will-change: transform; }
+.rc-photo::after { content: ''; position: absolute; inset: 0; background: radial-gradient(70% 60% at 50% 40%, rgba(0,0,0,.15), rgba(0,0,0,.72) 100%), linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.05) 40%, rgba(0,0,0,.7)); }
+.rc-stage:has(.rc-photo) .rc-wall { opacity: .12; } .rc-stage:has(.rc-photo) .rc-brand { opacity: .16; } .rc-stage:has(.rc-photo) .rc-floor { opacity: .55; }
