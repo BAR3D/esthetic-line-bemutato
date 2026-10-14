@@ -15,6 +15,7 @@ LAYOUTS.recepcio = function () {
   const fontLoad = () => { const f = window.A5F && A5F[C.alapBetu || 'cormorant']; if (f && !document.getElementById('rcFont')) { const l = document.createElement('link'); l.id = 'rcFont'; l.rel = 'stylesheet'; l.href = `https://fonts.googleapis.com/css2?family=${f[1]}&display=swap`; document.head.appendChild(l); document.body.style.setProperty('--serif', `"${f[0]}", Georgia, serif`); } };
 
   const tema = (C.recepcio && C.recepcio.tema) || 'vilagos', lux = tema === 'luxus';
+  window.__lx2Intro = true;   // a saját ajtós érkezés váltja ki az általános nyitófüggönyt
   lx2Start(() => {
     fontLoad();
     if (lux) document.body.classList.remove('light');   // a sötét luxus téma a saját színeit használja
