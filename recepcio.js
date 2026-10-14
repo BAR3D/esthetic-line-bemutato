@@ -23,9 +23,12 @@ LAYOUTS.recepcio = function () {
     panels.forEach((p, i) => p.style.setProperty('--a', (i * 360) / N + 'deg'));
     let ang = 0, target = 0, drag = false, lx = 0, moved = 0, zoom = 0, zt = 0, focus = -1;
     const norm = (a) => ((a % 360) + 360) % 360;
-    FX.on(stage, 'pointerdown', (e) => { if (e.target.closest('button, a, .rc-desk')) return; drag = true; lx = e.clientX; moved = 0; stage.setPointerCapture(e.pointerId); stage.classList.add('drag'); });
-    FX.on(stage, 'pointermove', (e) => { if (!drag) return; const d = e.clientX - lx; lx = e.clientX; moved += Math.abs(d); target -= d * 0.22; });
-    FX.on(stage, 'pointerup', () => { drag = false; stage.classList.remove('drag'); const step = 360 / N; target = Math.round(target / step) * step; });
+    // húzás csak valódi mozgásnál kapja el az egeret – különben a kattintás eljut a teremhez (pointer capture miatt nem jutott el)
+    let down = false, pid = 0;
+    FX.on(stage, 'pointerdown', (e) => { if (e.target.closest('button, .rc-desk')) return; down = true; drag = false; lx = e.clientX; moved = 0; pid = e.pointerId; });
+    FX.on(stage, 'pointermove', (e) => { if (!down) return; const d = e.clientX - lx; lx = e.clientX; moved += Math.abs(d); if (!drag && moved > 6) { drag = true; try { stage.setPointerCapture(pid); } catch { /* */ } stage.classList.add('drag'); } if (drag) target -= d * 0.22; });
+    const up = () => { if (!down) return; down = false; if (drag) { drag = false; stage.classList.remove('drag'); const step = 360 / N; target = Math.round(target / step) * step; } };
+    FX.on(stage, 'pointerup', up); FX.on(stage, 'pointercancel', up);
     FX.on(stage, 'click', (e) => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
     $$('.rc-arrow').forEach((b) => FX.on(b, 'click', () => { target += (+b.dataset.d * 360) / N; }));
     const turnTo = (i) => { target = target - norm(target) + (i * 360) / N; if (norm(target) - norm(ang) > 180) target -= 360; };
