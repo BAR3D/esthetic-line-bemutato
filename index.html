@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Esthetic Line</title>
+<meta name="description" content="Esthetic Line webshop — 102 termék.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#121915">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css?v=mv7nwwhr">
+<link rel="stylesheet" href="style.css?v=mv7nwwhr">
+<link rel="stylesheet" href="layouts.css?v=mv7nwwhr">
+<link rel="stylesheet" href="layouts2.css?v=mv7nwwhr">
+<link rel="stylesheet" href="layouts3.css?v=mv7nwwhr">
+<link rel="stylesheet" href="layouts4.css?v=mv7nwwhr">
+<link rel="stylesheet" href="alapok.css?v=mv7nwwhr">
+</head>
+<body>
+<!-- Mozgó háttér: jelenetek + fényfoltok + fénypontok (az egész oldal mögött) -->
+<div class="bg" aria-hidden="true">
+  <div class="bg-media" id="bgMedia"></div>
+  <div class="bg-blob b1"></div><div class="bg-blob b2"></div><div class="bg-blob b3"></div>
+  <canvas id="sparkle"></canvas>
+  <div class="bg-shade"></div>
+</div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#/"><span class="brand-mark"></span>Esthetic Line</a>
+  <nav class="nav-links" id="navLinks">
+    <a href="#/termekek">Termékek</a>
+    <a href="#/borom">Kezelések</a>
+    <a href="#/markak">Kínálatunk</a>
+    <a href="#/kapcsolat">Kapcsolat</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="icon-btn" id="searchBtn" aria-label="Keresés"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+    <button class="cart-btn" id="cartBtn" aria-label="Kosár"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="cartCount">0</span></button>
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menü"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div>
+      <a class="brand" href="#/"><span class="brand-mark"></span>Esthetic Line</a>
+      <p class="muted">Esthetic Line — gondosan válogatott termékek, gyors kiszállítás.</p>
+    </div>
+    <div>
+      <h4>Vásárlás</h4>
+      <a href="#/termekek">Összes termék</a><a href="#/borom">Miben segíthetünk?</a><a href="#/markak">Kínálatunk</a>
+    </div>
+    <div>
+      <h4>Információ</h4>
+      
+    </div>
+    <div>
+      <h4>Kapcsolat</h4>
+      <a href="tel:+36309661111">+36 30 966 1111</a><a href="mailto:agi.tresz@gmail.com">agi.tresz@gmail.com</a><span class="muted">1132 Budapest, Visegrádi utca 17.</span><a href="https://www.facebook.com/estheticlinebeautycenter/" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/estheticlinebeauty/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </div>
+  <p class="copy">© Esthetic Line — Minden jog fenntartva.</p>
+</footer>
+
+<!-- Kosár-fiók -->
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-panel">
+    <div class="drawer-head"><h3>Kosarad</h3><button class="icon-btn" id="drawerClose" aria-label="Bezárás"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="ship-meter" id="shipMeter"></div>
+    <div class="drawer-items" id="drawerItems"></div>
+    <div class="drawer-foot" id="drawerFoot"></div>
+  </div>
+</aside>
+
+<!-- Keresés -->
+<div class="search" id="search" aria-hidden="true">
+  <div class="search-box">
+    <input id="searchInput" type="search" placeholder="Keress a kínálatban…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<button class="update-btn" id="updateBtn" hidden>Új verzió — Frissítés</button>
+
+<script src="app.js?v=mv7nwwhr"></script>
+<script src="layouts.js?v=mv7nwwhr"></script>
+<script src="layouts2.js?v=mv7nwwhr"></script>
+<script src="layouts3.js?v=mv7nwwhr"></script>
+<script src="layouts4.js?v=mv7nwwhr"></script>
+<script src="alapok-data.js?v=mv7nwwhr"></script>
+<script src="alapok-motor.js?v=mv7nwwhr"></script>
+<script src="alapok.js?v=mv7nwwhr"></script>
+</body>
+</html>
